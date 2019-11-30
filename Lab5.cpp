@@ -1,73 +1,70 @@
 #include "Mylesson.h"
 
-//Ф-ія вводу масиву
-void InputArray(Array  A[])
+void InputArray(Array  arr[])
 {
-	for (int i = 0; i < Rows; i++)
-		for (int j = 0; j < Cols; j++)
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < columns; j++)
 		{
 			cout << "[" << i << "][" << j << "] = ";
-			cin >> A[i].arr[j];
+			cin >> arr[i].matrix[j];
 		}
 }
 
-//Ф-ія виводу масиву
-void OutputArray(Array  A[])
+void OutputArray(Array  arr[])
 {
-	for (int i = 0; i < Rows; i++)
+	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j < Cols; j++)
-			cout << setw(5) << A[i].arr[j] << "    ";
+		for (int j = 0; j < columns; j++)
+			cout << setw(5) << arr[i].matrix[j] << "    ";
 		cout << endl;
 	}
 }
 
-//Ф-ія сортування стовпців масиву злиттям по спаданню
-void SortColsByMergingInDescending(Array A[], int Cols)
+void SortColumnsByMergingInDescending(Array arr[], int columns)
 {
-	for (int i = 0; i < Cols; i++)
+	for (int i = 0; i < columns; i++)
 	{
-		for (int SizeIterator = 1; SizeIterator < Cols; SizeIterator *= 2)
+		for (int sizeIterator = 1; sizeIterator < columns; sizeIterator *= 2)
 		{
-			for (int Iterator = 0; Iterator < Cols - SizeIterator; Iterator += 2 * SizeIterator)
+			for (int iterator = 0; iterator < columns - sizeIterator; iterator += 2 * sizeIterator)
 			{
-				int LeftIterator = 0;
-				int RightIterator = 0;
-				int LeftBorder = Iterator;
-				int MidBorder = Iterator + SizeIterator;
-				int RightBorder = Iterator + 2 * SizeIterator;
-				RightBorder = (RightBorder < Cols) ? RightBorder : Cols;
-				int* SortedBlock = new int[RightBorder - LeftBorder];
+				int leftIterator = 0;
+				int rightIterator = 0;
+				int leftBorder = iterator;
+				int midBorder = iterator + sizeIterator;
+				int rightBorder = iterator + 2 * sizeIterator;
+				rightBorder = (rightBorder < columns) ? rightBorder : columns;
+				int* sortedBlock = new int[rightBorder - leftBorder];
 
-				while (LeftBorder + LeftIterator < MidBorder && MidBorder + RightIterator < RightBorder)
+				while (leftBorder + leftIterator < midBorder && midBorder + rightIterator < rightBorder)
 				{
-					if (A[LeftBorder + LeftIterator].arr[i] > A[MidBorder + RightIterator].arr[i])
+					if (arr[leftBorder + leftIterator].matrix[i] > arr[midBorder + rightIterator].matrix[i])
 					{
-						SortedBlock[LeftIterator + RightIterator] = A[LeftBorder + LeftIterator].arr[i];
-						LeftIterator++;
+						sortedBlock[leftIterator + rightIterator] = arr[leftBorder + leftIterator].matrix[i];
+						leftIterator++;
 					}
 					else
 					{
-						SortedBlock[LeftIterator + RightIterator] = A[MidBorder + RightIterator].arr[i];
-						RightIterator++;
+						sortedBlock[leftIterator + rightIterator] = arr[midBorder + rightIterator].matrix[i];
+						rightIterator++;
 					}
 				}
-				while (LeftBorder + LeftIterator < MidBorder)
+				while (leftBorder + leftIterator < midBorder)
 				{
-					SortedBlock[LeftIterator + RightIterator] = A[LeftBorder + LeftIterator].arr[i];
-					LeftIterator++;
+					sortedBlock[leftIterator + rightIterator] = arr[leftBorder + leftIterator].matrix[i];
+					leftIterator++;
 				}
-				while (MidBorder + RightIterator < RightBorder)
+				while (midBorder + rightIterator < rightBorder)
 				{
-					SortedBlock[LeftIterator + RightIterator] = A[MidBorder + RightIterator].arr[i];
-					RightIterator++;
+					sortedBlock[leftIterator + rightIterator] = arr[midBorder + rightIterator].matrix[i];
+					rightIterator++;
 				}
 
-				for (int MergeIterator = 0; MergeIterator < LeftIterator + RightIterator; MergeIterator++)
+				for (int mergeIterator = 0; mergeIterator < leftIterator + rightIterator; mergeIterator++)
 				{
-					A[LeftBorder + MergeIterator].arr[i] = SortedBlock[MergeIterator];
+					arr[leftBorder + mergeIterator].matrix[i] = sortedBlock[mergeIterator];
 				}
-				delete SortedBlock;
+				delete sortedBlock;
 
 			}
 
@@ -76,50 +73,48 @@ void SortColsByMergingInDescending(Array A[], int Cols)
 
 }
 
-//Ф-ія, що рахує добуток ел. під допоміжною діагоналлю
-long long int FooProduct(Array A)
+long long int ArrayProductUnderAdditionalDiagonal(Array arr)
 {
-	long long int Product = 1;
+	long long int product = 1;
 
-	for (int j = 4; j > k; j--)
+	for (int j = 4; j > iterator_; j--)
 	{
-		cout << A.arr[j] << "  ";
-		Product = Product * A.arr[j];
+		cout << arr.matrix[j] << "  ";
+		product = product * arr.matrix[j];
 	}
-	cout << endl << Product << endl;
-	return Product;
+	cout << endl << product << endl;
+	return product;
 }
-//Ф-ія, що рахує серед.арифметичне
-long long int FooAvg(long long int ArrayProduct[])
+
+long long int ArrayAverageUnderAdditionalDiagonal(long long int arrayProduct[])
 {
-	long long int Avg = 0;
-	for (int i = 0; i < Cols; i++)
+	long long int average = 0;
+	for (int i = 0; i < columns; i++)
 	{
-		Avg = Avg + ArrayProduct[i] / Cols;
+		average = average + arrayProduct[i] / columns;
 	}
-	return Avg;
+	return average;
 }
 
 int main()
 {
-	Array  A[Rows]{}; // Створення 2-мірного масиву
-	cout << "Input elements of Array A" << endl;
-	InputArray(A);
-	cout << "\nInput Array A " << endl;
-	OutputArray(A);
-	SortColsByMergingInDescending(A, Cols);
-	cout << "\nSorted Array A " << endl;
-	OutputArray(A);
+	Array  arr[rows]{}; //Creation of 2-dimension matrix
+	cout << "Input elements of Array arr" << endl;
+	InputArray(arr);
+	cout << "\nInput Array arr " << endl;
+	OutputArray(arr);
+	SortColumnsByMergingInDescending(arr, columns);
+	cout << "\nSorted Array arr " << endl;
+	OutputArray(arr);
 
-	cout << "\nProduct of Array A under additional " << endl;
-	long long int ArrayProduct[Cols]{};// Створення масиву, що збереже добуток ел. під допоміжною діагоналлю
-	for (int i = 1; i < Rows; i++)
+	cout << "\nProduct of Array under an additional diagonal" << endl;
+	long long int arrayProduct[columns]{};
+	for (int i = 1; i < rows; i++)
 	{
-		ArrayProduct[i] = FooProduct(A[i]);
-		k--;
+		arrayProduct[i] = ArrayProductUnderAdditionalDiagonal(arr[i]);
+		iterator_--;
 	}
-	cout << "FooAvg = " << FooAvg(ArrayProduct) << endl;
+	cout << "ArrayAverageUnderAdditionalDiagonal = " << ArrayAverageUnderAdditionalDiagonal(arrayProduct) << endl;
 
 	return 0;
 
-}
